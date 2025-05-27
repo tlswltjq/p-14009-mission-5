@@ -4,7 +4,7 @@ public class WiseSayingService {
     private final WiseSayingRepository repository;
 
     public WiseSayingService() {
-        this.repository = new WiseSayingRepository();
+        this.repository = new WiseSayingFileRepository();
     }
 
     public WiseSaying registerWiseSaying(String wiseSayingContent, String author) {
