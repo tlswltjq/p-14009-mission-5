@@ -54,8 +54,7 @@ public class WiseSayingControllerTest {
                 등록
                 현재를 사랑하라.
                 작자미상
-                삭제
-                1
+                삭제?id=1
                 종료
                 """);
 
@@ -71,8 +70,7 @@ public class WiseSayingControllerTest {
                 등록
                 현재를 사랑하라.
                 작자미상
-                삭제
-                2
+                삭제?id=2
                 종료
                 """);
 
@@ -87,8 +85,7 @@ public class WiseSayingControllerTest {
                 등록
                 현재를 사랑하라.
                 작자미상
-                수정
-                1
+                수정?id=1
                 수정된 명언
                 수정된 작가
                 목록
@@ -106,8 +103,7 @@ public class WiseSayingControllerTest {
                 등록
                 현재를 사랑하라.
                 작자미상
-                수정
-                2
+                수정?id=2
                 종료
                 """);
 
@@ -136,5 +132,65 @@ public class WiseSayingControllerTest {
                 종료
                 """);
         assertThat(out).contains("== 명언 앱을 종료합니다. ==");
+    }
+
+    @Test
+    @DisplayName("목록 작가로 검색")
+    void t11() {
+        final String out = AppTest.run("""
+                등록
+                현재를 사랑하라.
+                작자미상
+                등록
+                미래를 사랑하라.
+                작자미상
+                목록?type=author&keyword=작자미상
+                종료
+                """);
+
+        assertThat(out)
+                .contains("번호 / 작가 / 명언")
+                .contains("현재를 사랑하라.")
+                .contains("미래를 사랑하라.");
+    }
+
+    @Test
+    @DisplayName("목록 명언으로 검색")
+    void t12() {
+        final String out = AppTest.run("""
+                등록
+                현재를 사랑하라.
+                작자미상
+                등록
+                미래를 사랑하라.
+                작자미상
+                목록?type=content&keyword=사랑하라
+                종료
+                """);
+
+        assertThat(out)
+                .contains("번호 / 작가 / 명언")
+                .contains("현재를 사랑하라.")
+                .contains("미래를 사랑하라.");
+    }
+
+    @Test
+    @DisplayName("목록 명언과 작가로 검색")
+    void t13() {
+        final String out = AppTest.run("""
+                등록
+                현재를 사랑하라.
+                작자미상
+                등록
+                미래를 사랑하라.
+                작자미상
+                목록?type=content&keyword=사랑하라&type=author&keyword=작자미상
+                종료
+                """);
+
+        assertThat(out)
+                .contains("번호 / 작가 / 명언")
+                .contains("현재를 사랑하라.")
+                .contains("미래를 사랑하라.");
     }
 }
