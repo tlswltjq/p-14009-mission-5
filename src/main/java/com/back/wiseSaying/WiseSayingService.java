@@ -1,5 +1,7 @@
 package com.back.wiseSaying;
 
+import java.util.List;
+
 public class WiseSayingService {
     private final WiseSayingRepository repository;
 
@@ -47,5 +49,37 @@ public class WiseSayingService {
 
     public WiseSaying findById(int id) {
         return repository.findById(id);
+    }
+
+    public void searchWiseSayings(String type, String keyword) {
+        List<WiseSaying> searchResults;
+        switch (type) {
+            case "content":
+                searchResults = repository.findByContent(keyword);
+                break;
+            case "author":
+                searchResults = repository.findByAuthor(keyword);
+                break;
+            case "all":
+                String[] keywords = keyword.split(" ");
+                if (keywords.length == 2) {
+                    searchResults = repository.findByContentAndAuthor(keywords[0], keywords[1]);
+                } else {
+                    System.out.println("검색 형식이 올바르지 않습니다. (예: all 명언내용 작가명)");
+                    return;
+                }
+                break;
+            default:
+                System.out.println("지원하지 않는 검색 타입입니다. (content, author, all)");
+                return;
+        }
+
+        if (searchResults.isEmpty()) {
+            System.out.println("검색 결과가 없습니다.");
+        } else {
+            System.out.println("번호 / 작가 / 명언");
+            System.out.println("-----------------------------");
+            searchResults.forEach(System.out::println);
+        }
     }
 }

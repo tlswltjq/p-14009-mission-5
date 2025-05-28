@@ -29,7 +29,18 @@ public class WiseSayingController {
                 service.registerWiseSaying(content, author);
                 break;
             case "목록":
-                service.showWiseSayingList();
+
+                if (request.getParams().isEmpty()) {
+                    service.showWiseSayingList();
+                } else {
+                    String type = request.getParams().get("type");
+                    String keyword = request.getParams().get("keyword");
+                    if (type != null && keyword != null) {
+                        service.searchWiseSayings(type, keyword);
+                    } else {
+                        System.out.println("목록 명령어가 올바르지 않습니다. (예: 목록?type=content&keyword=안녕)");
+                    }
+                }
                 break;
             case "삭제":
                 service.deleteWiseSaying(request.getParams().get("id") != null ? Integer.parseInt(request.getParams().get("id")) : null);
