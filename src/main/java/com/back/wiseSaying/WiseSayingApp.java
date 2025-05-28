@@ -22,10 +22,9 @@ public class WiseSayingApp {
 
     public void start() {
         while (isRunning) {
-            String cmd;
             System.out.print("명령) ");
-            cmd = scanner.nextLine().trim();
-            isRunning = controller.executeCommand(cmd);
+            Request request = new Request(scanner.nextLine().trim());
+            isRunning = controller.executeCommand(request);
         }
     }
 }

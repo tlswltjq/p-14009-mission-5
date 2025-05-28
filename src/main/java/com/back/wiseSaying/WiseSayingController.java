@@ -16,11 +16,11 @@ public class WiseSayingController {
         System.out.println("== 명언 앱 ==");
     }
 
-    public boolean executeCommand(String command) {
-        Integer id = null;
+    public boolean executeCommand(Request request) {
         String content;
         String author;
-        switch (command) {
+
+        switch (request.getCommand()) {
             case "등록":
                 System.out.print("명언 : ");
                 content = scanner.nextLine().trim();
@@ -32,13 +32,10 @@ public class WiseSayingController {
                 service.showWiseSayingList();
                 break;
             case "삭제":
-                System.out.print("?id = ");
-                id = Integer.parseInt(scanner.nextLine().trim());
-                service.deleteWiseSaying(id);
+                service.deleteWiseSaying(request.getParams().get("id") != null ? Integer.parseInt(request.getParams().get("id")) : null);
                 break;
             case "수정":
-                System.out.print("?id = ");
-                id = Integer.parseInt(scanner.nextLine().trim());
+                Integer id = request.getParams().get("id") != null ? Integer.parseInt(request.getParams().get("id")) : null;
                 WiseSaying wiseSaying = service.findById(id);
                 if (wiseSaying != null) {
 
