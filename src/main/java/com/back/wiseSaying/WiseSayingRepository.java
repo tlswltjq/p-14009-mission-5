@@ -11,6 +11,12 @@ public interface WiseSayingRepository {
 
     WiseSaying findById(Integer id);
 
+    List<WiseSaying> findByContent(String content);
+
+    List<WiseSaying> findByAuthor(String author);
+
+    List<WiseSaying> findByContentAndAuthor(String content, String author);
+
     List<WiseSaying> findAll();
 
     WiseSaying update(WiseSaying wiseSaying);

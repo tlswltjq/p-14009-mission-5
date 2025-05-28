@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class WiseSayingFileRepository implements WiseSayingRepository {
@@ -89,6 +90,24 @@ public class WiseSayingFileRepository implements WiseSayingRepository {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    public List<WiseSaying> findByContent(String content) {
+        return findAll().stream()
+                .filter(wiseSaying -> wiseSaying.getContent().contains(content))
+                .collect(Collectors.toList());
+    }
+
+    public List<WiseSaying> findByAuthor(String author) {
+        return findAll().stream()
+                .filter(wiseSaying -> wiseSaying.getAuthor().contains(author))
+                .collect(Collectors.toList());
+    }
+
+    public List<WiseSaying> findByContentAndAuthor(String content, String author) {
+        return findAll().stream()
+                .filter(wiseSaying -> wiseSaying.getContent().contains(content) && wiseSaying.getAuthor().contains(author))
+                .collect(Collectors.toList());
     }
 
     public List<WiseSaying> findAll() {
