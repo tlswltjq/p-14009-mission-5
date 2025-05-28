@@ -25,6 +25,10 @@ public class WiseSayingService {
         System.out.println(repository.deleteById(id));
     }
 
+    public void deleteAllWiseSayings() {
+        System.out.println(repository.deleteAll());
+    }
+
     public void updateWiseSaying(int id, String newContent, String newAuthor) {
         WiseSaying wiseSaying = repository.findById(id);
         WiseSaying updated = wiseSaying.update(newContent, newAuthor);
