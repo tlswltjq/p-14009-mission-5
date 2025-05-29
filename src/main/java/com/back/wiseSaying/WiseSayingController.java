@@ -1,6 +1,7 @@
 package com.back.wiseSaying;
 
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class WiseSayingController {
     private final Scanner scanner;
@@ -14,6 +15,14 @@ public class WiseSayingController {
 
     public void sayHello() {
         System.out.println("== 명언 앱 ==");
+        if (service.findAllWiseSayings().isEmpty()) {
+            initSampleData();
+        }
+    }
+
+    private void initSampleData() {
+        IntStream.range(1, 11)
+                .forEach(i -> service.registerWiseSaying("명언 " + i, "작자미상 " + i));
     }
 
     public boolean executeCommand(Request request) {

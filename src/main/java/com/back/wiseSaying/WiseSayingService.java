@@ -16,9 +16,14 @@ public class WiseSayingService {
     }
 
     public void showWiseSayingList() {
+        List<WiseSaying> wiseSayingList = findAllWiseSayings();
         System.out.println("번호 / 작가 / 명언");
         System.out.println("-----------------------------");
-        repository.findAll().forEach(System.out::println);
+        wiseSayingList.forEach(System.out::println);
+    }
+
+    public List<WiseSaying> findAllWiseSayings(){
+        return repository.findAll();
     }
 
     public void deleteWiseSaying(Integer id) {
