@@ -33,4 +33,11 @@ public class Request {
             }
         }
     }
+    public Integer getIntParam(String name, int defaultValue) {
+        try {
+            return Integer.parseInt(params.getOrDefault(name, String.valueOf(defaultValue)));
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
 }

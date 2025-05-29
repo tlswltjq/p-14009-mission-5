@@ -15,7 +15,7 @@ public class WiseSayingController {
 
     public void sayHello() {
         System.out.println("== 명언 앱 ==");
-        if (service.findAllWiseSayings().isEmpty()) {
+        if (service.findAllWiseSayings().isEmpty()) { // 모든 명언을 가져와 비어있는지 확인
             initSampleData();
         }
     }
@@ -38,16 +38,16 @@ public class WiseSayingController {
                 service.registerWiseSaying(content, author);
                 break;
             case "목록":
-
-                if (request.getParams().isEmpty()) {
-                    service.showWiseSayingList();
+                Integer page = request.getIntParam("page", 1);
+                if (request.getParams().isEmpty() || request.getParams().size() == 1 && request.getParams().containsKey("page")) {
+                    service.showWiseSayingList(page);
                 } else {
                     String type = request.getParams().get("type");
                     String keyword = request.getParams().get("keyword");
                     if (type != null && keyword != null) {
-                        service.searchWiseSayings(type, keyword);
+                        service.searchWiseSayings(type, keyword, page); // 검색 결과에 페이징 적용
                     } else {
-                        System.out.println("목록 명령어가 올바르지 않습니다. (예: 목록?type=content&keyword=안녕)");
+                        System.out.println("목록 명령어가 올바르지 않습니다. (예: 목록?type=content&keyword=안녕&page=1)");
                     }
                 }
                 break;

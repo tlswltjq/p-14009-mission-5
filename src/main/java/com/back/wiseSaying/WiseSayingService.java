@@ -4,6 +4,7 @@ import java.util.List;
 
 public class WiseSayingService {
     private final WiseSayingRepository repository;
+    private static final int ITEMS_PER_PAGE = 5;
 
     public WiseSayingService() {
         this.repository = new WiseSayingFileRepository();
@@ -15,11 +16,9 @@ public class WiseSayingService {
         return wiseSaying;
     }
 
-    public void showWiseSayingList() {
-        List<WiseSaying> wiseSayingList = findAllWiseSayings();
-        System.out.println("번호 / 작가 / 명언");
-        System.out.println("-----------------------------");
-        wiseSayingList.forEach(System.out::println);
+    public void showWiseSayingList(int page) {
+        List<WiseSaying> allWiseSayings = findAllWiseSayings();
+        displayPagedWiseSayings(allWiseSayings, page);
     }
 
     public List<WiseSaying> findAllWiseSayings(){
@@ -60,7 +59,7 @@ public class WiseSayingService {
         return repository.findById(id);
     }
 
-    public void searchWiseSayings(String type, String keyword) {
+    public void searchWiseSayings(String type, String keyword, int page) {
         List<WiseSaying> searchResults;
         switch (type) {
             case "content":
@@ -83,12 +82,41 @@ public class WiseSayingService {
                 return;
         }
 
-        if (searchResults.isEmpty()) {
-            System.out.println("검색 결과가 없습니다.");
-        } else {
-            System.out.println("번호 / 작가 / 명언");
-            System.out.println("-----------------------------");
-            searchResults.forEach(System.out::println);
-        }
+        displayPagedWiseSayings(searchResults, page);
     }
+    private void displayPagedWiseSayings(List<WiseSaying> wiseSayings, int page) {
+        if (wiseSayings.isEmpty()) {
+            System.out.println("명언이 없습니다.");
+            return;
+        }
+
+        int totalItems = wiseSayings.size();
+        int totalPages = (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE);
+
+        if (page < 1 || page > totalPages) {
+            System.out.println("유효하지 않은 페이지 번호입니다.");
+            return;
+        }
+
+        int startIndex = (page - 1) * ITEMS_PER_PAGE;
+        int endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+
+        List<WiseSaying> pagedList = wiseSayings.subList(startIndex, endIndex);
+
+        System.out.println("번호 / 작가 / 명언");
+        System.out.println("-----------------------------");
+        pagedList.forEach(System.out::println);
+        System.out.println("-----------------------------");
+
+        System.out.print("페이지 : ");
+        for (int i = 1; i <= totalPages; i++) {
+            if (i == page) {
+                System.out.print("[" + i + "] ");
+            } else {
+                System.out.print(i + " ");
+            }
+        }
+        System.out.println();
+    }
+
 }
